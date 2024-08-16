@@ -1,35 +1,40 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 const AdminDashboard = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [data, setData] = useState([]);
+
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
-  const data = [
-    {
-      username: "John Doe",
-      email: "john@example.com",
-      course_opting_date: "2024-08-01",
-      contact_no: "123-456-7890",
-      country: "USA",
-      job_profile: "Software Engineer",
-      course: "data Analytics",
-    },
-    {
-      username: "Jane Smith",
-      email: "jane@example.com",
-      course_opting_date: "2024-08-05",
-      contact_no: "987-654-3210",
-      country: "Canada",
-      job_profile: "Data Analyst",
-      course: "digital marketing",
-    },
-    // Add more data as needed
-  ];
+
+
+ 
+
+  // Fetch data on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/registers'); // Adjust the endpoint as necessary
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        // console.log(result);
+        
+        setData(result); // Assuming the result is an array of users
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); 
+
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -116,80 +121,80 @@ const AdminDashboard = () => {
 
             {/* user table */}
             <TabPanel>
-              <div className="bg-white shadow rounded-lg p-4">
-                <h3 className="text-lg font-semibold mb-2">Users List</h3>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full bg-white shadow-md rounded-lg">
-                    <thead>
-                      <tr>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Sr. No
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Username
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Email
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Course Opting Date
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Course name
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Contact No
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          job profile
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Country
-                        </th>
-                        <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600  tracking-wider">
-                          Action
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.map((item, index) => (
-                        <tr key={index} className="hover:bg-gray-100">
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {index + 1}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.username}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.email}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.course_opting_date}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.course}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.contact_no}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.job_profile}
-                          </td>
-                          <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            {item.country}
-                          </td>
-                          <div className="text-center ">
-                            <button className="bg-red-500 p-1 rounded px-3 mt-10 lg:mt-3 font- text-white">
-                              Delete{" "}
-                            </button>
-                          </div>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </TabPanel>
+      <div className="bg-white shadow rounded-lg p-4">
+        <h3 className="text-lg font-semibold mb-2">Users List</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Sr. No
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Username
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Course Opting Date
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Course Name
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Contact No
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Job Profile
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Country
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 tracking-wider">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.username}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.email}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.course_enroll_date}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.course}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.phone_number}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.job}
+                  </td>
+                  <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    {item.country}
+                  </td>
+                  <td className="text-center px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                    <button className="bg-red-500 p-1 rounded px-3 text-white">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </TabPanel>
 
             {/* <TabPanel>
               <div className="bg-white shadow rounded-lg p-4">
