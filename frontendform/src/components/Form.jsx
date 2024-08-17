@@ -15,8 +15,12 @@ const Form = () => {
         job: '',
         course_enroll_date: '',
         course: '',
+        service:' '
+
     });
 
+    console.log(formData);
+    
     const navigate = useNavigate();
 
  
@@ -67,7 +71,7 @@ const Form = () => {
             onSubmit={handleSubmit} className="max-w-lg mx-auto bg-[#009bb5] p-8 rounded-lg shadow-md">
                 {/* Your form fields */}
                 <div className="mb-6">
-                    <label htmlFor="course" className="block text-white font-bold mb-2">Your Desired Course</label>
+                    <label htmlFor="course" className="block text-white font-bold mb-2">Your Desired Course / Training </label>
                     <input
                         id="course"
                         type="text"
@@ -159,10 +163,30 @@ const Form = () => {
                     />
                 </div>
 
+                {/* your service */}
+                <div className="mb-6">
+        <label htmlFor="service" className="block text-white font-bold mb-2">
+          Select Your Service
+        </label>
+        <select
+          name="service" // Name should match the formData key
+          id="service"
+          required
+          value={formData.service} // Bind the selected value to state
+          onChange={handleChange} // Update state on change
+          className="w-full p-2 border border-gray-300 rounded text-gray-700"
+        >
+          <option value="" className='text-gray-400'>Select a service</option>
+          <option value="BuisnessToCustomer">Business to Customer</option>
+          <option value="BuisnessToBuisness">Business to Business</option>
+        </select>
+      </div>
+
+
                 <div className="text-center">
                     <button
                         type="submit"
-                        className="w-full text-xl bg-[#009bb5] border text-white shadow-xl font-bold py-3 px-10 rounded"
+                        className="w- text-xl bg-[#009bb5] border text-white shadow-xl font-bold py-3 px-10 rounded"
                     >
                         ACT NOW
                     </button>

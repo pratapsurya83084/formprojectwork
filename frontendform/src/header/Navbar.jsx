@@ -5,13 +5,13 @@ const Navbar = () => {
     <div className='bg-gray-100 shadow-lg pb-2'>
       <div className='flex justify-between items-center'>
         <div className='flex justify-center items-center w-full'>
-          <a href="https://bisjhintus.com/">
+        
             <img
-              className='h-20 p-2 cursor-pointer'
+              className='h-20 p-2 '
               src="\logo.png" 
               alt="Logo"
             />
-          </a>
+         
         </div>
         <div className='mr-4 mt-4 mb-'>
          <Link to="/admin">

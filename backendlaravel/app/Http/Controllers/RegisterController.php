@@ -29,7 +29,7 @@ class RegisterController extends Controller
             'job'=>'required|max:255',
             'course_enroll_date'=>'required|max:255',
             'phone_number'=>'required|max:255',
-            
+            'service'=>'required|max:255',
         ]);
         // return "ok";
        $register=register::create($filds);

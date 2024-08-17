@@ -17,5 +17,6 @@ class register extends Model
         'job', 
         'course_enroll_date',
          'course',
+         'service'
     ];
 }

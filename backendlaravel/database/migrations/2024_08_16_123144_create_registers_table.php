@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('job');
             $table->string('course_enroll_date');
             $table->string('phone_number');
+            $table->string('service');
             $table->timestamps();
         });
     }
