@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 Route::apiResource('/registers',RegisterController::class);
 
+Route::delete('/delete/{id}', [RegisterController::class, 'destroy']);
+// delete admin /logout
+// Route::delete('/api/deleteUser/{username}', [RegisterController::class, 'deleteUser']);
+
+
 Route::get('/',function(){
     return 'api';
 });

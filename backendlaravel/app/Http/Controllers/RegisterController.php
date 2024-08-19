@@ -55,8 +55,36 @@ class RegisterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(register $register)
+    public function destroy($id)
     {
-        //
+        //delete the user id wise
+        $register = register::find($id);
+
+    if ($register) {
+        $register->delete();
+        return response()->json(['message' => 'Entry deleted successfully'], 200);
+    } else {
+        return response()->json(['message' => 'Entry not found'], 404);
     }
+    }
+
+
+
+    // logout admin
+//     public function deleteUser($username)
+// {
+//     // Find the user by username
+//     $user = register::where('username,email', $username)->first();
+
+//     if ($user) {
+//         // Delete the user
+//         $user->delete();
+//         return response()->json(['message' => 'User deleted successfully.'], 200);
+//     }
+
+//     return response()->json(['message' => 'User not found.'], 404);
+// }
+
+
+
 }

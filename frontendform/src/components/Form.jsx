@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 
 
 const Form = () => {
@@ -19,12 +19,22 @@ const Form = () => {
 
     });
 
-    console.log(formData);
+    // useEffect(() => {
+    // // make user object
+    // //objectuser
+    // const userEmailAndPassword = {
+    //     username: formData.username,
+    //     email: formData.email, 
+    // };
+    // const user = localStorage.setItem('userEmailAndPassword',JSON.stringify(userEmailAndPassword));
+   
     
-    const navigate = useNavigate();
+    // },[]);
 
- 
-  
+    // const adminEmail="pratap@gmail.com";
+    // const adminUsername="pratapAdmin";
+
+    const navigate = useNavigate();
  
     const handleChange = (e) => {
         const { id, value } = e.target;
@@ -38,23 +48,33 @@ const Form = () => {
     // onsubmit form
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-       
-       
       
        try {
         const response = await fetch("/api/registers", {
             method: "post",
             body: JSON.stringify(formData),
           });
-          console.log(response);
-          
+          if (response.ok) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your form has been submitted successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect or update the UI as needed
+                navigate('/submit/success');
+            });
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was a problem submitting your form. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
 
-  
 
-           alert("success submit")
-            // Redirect or update the UI as needed
-            navigate('/submit/success');
+
         } catch (error) {
             console.error('Error submitting form:', error);
         }
