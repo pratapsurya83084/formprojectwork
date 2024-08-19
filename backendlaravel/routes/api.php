@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -10,8 +11,10 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/registers',RegisterController::class);
 
 Route::delete('/delete/{id}', [RegisterController::class, 'destroy']);
-// delete admin /logout
-// Route::delete('/api/deleteUser/{username}', [RegisterController::class, 'deleteUser']);
+
+// admin login
+Route::post('/adminlogin', [AdminController::class,'adminLogin']);
+
 
 
 Route::get('/',function(){

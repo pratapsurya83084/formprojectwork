@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import SuccessSubmitForm   from './components/SuccessSubmitForm'
 import Admin from './admin/Admin'
 
-
+import Login from './login/Login'
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/submit/success" element={<SuccessSubmitForm/>}/>
        <Route path="/admin" element={<Admin/>}/>
+       <Route path="/login" element={<Login/>} />
         </Routes>
       </Router>
     // </Layout>
