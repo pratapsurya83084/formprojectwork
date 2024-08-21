@@ -15,6 +15,17 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/submit/success" element={<SuccessSubmitForm/>}/>
        <Route path="/admin" element={<Admin/>}/>
+      
+      
+     //if localstorage authtoken is present then redirects /admin otherwise not redirects
+      
+      {
+        localStorage.getItem('authtoken')? (
+          <Route path="/admin" element={<Admin/>}/>
+        ) : (
+          <Route path="/login" element={<Login/>} />
+        )   
+      }
        <Route path="/login" element={<Login/>} />
         </Routes>
       </Router>

@@ -9,39 +9,32 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+
+
+    // admin login
     public function adminLogin(Request $request)
     {
-        // Validate the input fields
-        $admindetails = $request->validate([
+      $admindata=  $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
-$addmin=Adminlogin::create($admindetails);
-return $addmin;
-$token=$Adminlogin->createToken($request->email);
-
-
-// check password
-$admin=adminLogin::where('email',$request->email)->first();
-
-if (!$admin || !Hash::check($request->password,$admin->password)) {
-    return[
-        'message' => 'Invalid credentials',
-        // 'error_code' => 401,
-    ];
-}
-
-$token=$admin->createToken($admin->email);
-return [
-//     'adminaccess_token' => $token->plainTextToken,
-//     'token_type' => 'Bearer',
-    'user'=>$admin,
-    'admintoken' => $token->plainTextToken,
-];
-        // Check if the admin with the provided email exists
     
+        // add admindata into database
+        // $addmin=Adminlogin::create($admindata);
+        // return $addmin;
+        
+        $user = Adminlogin::where('email', $request->email)->first();
     
+        if ($user && Hash::check($request->password, $user->password)) {
+            $token = $user->createToken('Personal Access Token')->plainTextToken;
+    
+            return response()->json([
+                'token' => $token,
+                'user' => $user,
+            ]);
+        }
+    
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
         // Method to fetch all users
@@ -62,7 +55,7 @@ return [
     
             if ($user) {
                 // Revoke all tokens issued to the user
-                $user->admintokens()->delete();
+                // $user->admintokens()->delete();
     
                 return response()->json([
                     'message' => 'Logged out successfully'

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+// import bcrypt from 'bcryptjs'; // bcrypt is not used in this example
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ const Login = () => {
     password: '',
   });
   const [error, setError] = useState('');
+  const [userData, setUserData] = useState(null); // Add userData state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,26 +25,68 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/login', {
-      
-      method:'post',
-      body:JSON.stringify(formData),
-      });
-      const data=response.json();
-      console.log(data);
-     const getadmindetail=localStorage.setItem("user",JSON.stringify(formData));
-      // navigate('/admin');
-      
+  //post  formdata
+    // const response = await axios.post('/api/login', formData);
+ 
+  
 
-      if (response.data.redirect_url) {
-        navigate(response.data.redirect_url);
+  
+
+      const { email, password } = formData; // Destructure formData
+      const user = await loginUser(email, password);
+      if (user) {
+        console.log("Login successful:", user);
+        alert('loginsuccessfull')
+        navigate('/admin')
+        const data = await fetchUserData();
+        setUserData(data);
+        console.log("User data:", data);
+        // You can navigate to another page here if needed
+        // navigate('/some-route');
       }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setError(error.response.data.message);
-      } else {
-        setError('There was an error logging in. Please try again.');
-      }
+    } catch (err) {
+      
+      setError('Login failed. Please try again.');
+      console.error(err);
+
+    }
+  };
+
+  // Function to handle user login
+  const loginUser = async (email, password) => {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('authToken', data.token); // Store the token
+      return data.user;
+    } else {
+      throw new Error('Login failed');
+    }
+  };
+
+ // Function to fetch user data
+  const fetchUserData = async () => {
+    const token = localStorage.getItem('authToken');
+
+    const response = await fetch('/api/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the header
+        'Accept': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('Request failed');
     }
   };
 

@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^6.6.0",
     "axios": "^1.7.4",
     "axois": "^0.0.1-security",
+    "bcryptjs": "^2.4.3",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
     "react": "^18.3.1",
