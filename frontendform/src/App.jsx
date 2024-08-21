@@ -4,7 +4,7 @@ import Home from "./components/Home";
 // import Layout from "./layout/Layout";
 import SuccessSubmitForm   from './components/SuccessSubmitForm'
 import Admin from './admin/Admin'
-
+import ProtectedRoute from "./protectRoute/ProtectedRoute";
 import Login from './login/Login'
 
 function App() {
@@ -14,18 +14,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/submit/success" element={<SuccessSubmitForm/>}/>
-       <Route path="/admin" element={<Admin/>}/>
+       {/* <Route path="/admin" element={<Admin/>}/> */}
       
       
-     //if localstorage authtoken is present then redirects /admin otherwise not redirects
+     {/* if localstorage authtoken is present then redirects /admin otherwise not redirects */}
       
-      {
-        localStorage.getItem('authtoken')? (
-          <Route path="/admin" element={<Admin/>}/>
-        ) : (
-          <Route path="/login" element={<Login/>} />
-        )   
-      }
+     <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
        <Route path="/login" element={<Login/>} />
         </Routes>
       </Router>

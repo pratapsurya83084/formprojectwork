@@ -9,22 +9,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+// register user
 Route::apiResource('/registers',RegisterController::class);
-
+// delete user entry
 Route::delete('/delete/{id}', [RegisterController::class, 'destroy']);
 
-// admin login
 
+// admin login
 Route::put('/update-password', [AdminController::class, 'updatePassword']);
 Route::post('/login', [AdminController::class, 'adminLogin']);
 // get all admin user
 Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
-// Route::middleware('auth:sanctum')->post('/login', function (Request $request) {
-//     return $request->user();
-// });
 
-//adminlogout route
-Route::post('/logout', [AdminController::class, 'adminlogout'])->middleware('auth:sanctum');
 
 
 

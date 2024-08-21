@@ -1,23 +1,18 @@
 // ProtectedRoute.js
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from '../contextapi/AuthContext';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const { auth } = useAuth();
+const ProtectedRoute = () => {
+  // Check for token in local storage
+  const authToken = localStorage.getItem('authToken');
 
-    return (
-        <Route
-            {...rest}
-            render={(props) =>
-                auth ? (
-                    <Component {...props} />
-                ) : (
-                    <Redirect to="/admin" />
-                )
-            }
-        />
-    );
+  // Redirect to login if no token is found
+  if (!authToken) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Render child routes if token is present
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

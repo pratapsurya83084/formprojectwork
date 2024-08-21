@@ -48,24 +48,42 @@ class AdminController extends Controller
         }    
 
 
-        public function adminLogout(Request $request)
-        {
-            // Ensure the user is authenticated
-            $user = Auth::user();
+        // public function adminLogout(Request $request)
+        // {
+        //     // Ensure the user is authenticated
+        //     $user = Auth::user();
     
-            if ($user) {
-                // Revoke all tokens issued to the user
-                // $user->admintokens()->delete();
+        //     if ($user) {
+        //         // Revoke all tokens issued to the user
+        //         // $user->admintokens()->delete();
     
-                return response()->json([
-                    'message' => 'Logged out successfully'
-                ], 200);
-            }
+        //         return response()->json([
+        //             'message' => 'Logged out successfully'
+        //         ], 200);
+        //     }
     
-            return response()->json([
-                'message' => 'No authenticated user found'
-            ], 404);
+        //     return response()->json([
+        //         'message' => 'No authenticated user found'
+        //     ], 404);
+        // }
+
+
+
+    //make a method update admin email and password id wise
+   
+    public function updatePassword(Request $request)
+    {
+        //update current password and replace current password by newpassword
+        $user = Auth::  adminLogin();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json(['error' => 'Current password does not match'], 401);
         }
 
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json(['message' => 'Password updated successfully'], 200);
+    }
 
     }

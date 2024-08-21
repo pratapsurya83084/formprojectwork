@@ -46,7 +46,7 @@ const Login = () => {
       }
     } catch (err) {
       
-      setError('Login failed. Please try again.');
+      setError('incorrect creadential . Please try again.');
       console.error(err);
 
     }
@@ -90,6 +90,23 @@ const Login = () => {
     }
   };
 
+
+  // update password
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    try {
+      // Perform password update logic here
+      const response = await axios.post('/api/update-password', {
+        email,
+        newPassword,
+      });
+      console.log('Password updated:', response.data);
+      setIsUpdating(false);
+      // Optionally redirect or show a success message
+    } catch (err) {
+      console.error('Password update failed:', err.response?.data?.message || err.message);
+    }
+  };
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
