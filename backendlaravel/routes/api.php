@@ -16,13 +16,14 @@ Route::delete('/delete/{id}', [RegisterController::class, 'destroy']);
 
 
 // admin login
-Route::put('/update-password', [AdminController::class, 'updatePassword']);
+
 Route::post('/login', [AdminController::class, 'adminLogin']);
 // get all admin user
 Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
 
 
-
+// update admin password
+Route::post('/update-password', [AdminController::class, 'updatePassword']);
 
 Route::get('/',function(){
     return 'api';

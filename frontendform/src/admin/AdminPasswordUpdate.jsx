@@ -1,35 +1,87 @@
-// PasswordUpdateModal.js
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Modal, Button, Input, message } from 'antd';
-const AdminPasswordUpdateModal = ({ visible, onClose, userId }) => {
+
+const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [email, setEmail] = useState(userEmail || '');
+
+  // const handleUpdatePassword = async () => {
+  
+  //   const authToken = localStorage.getItem('authToken');
+
+  //   try {
+  //     const response = await axios.post(
+  //       '/api/update-password',
+  //       {
+  //         email,
+  //         currentPassword,
+  //         newPassword,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       }
+  //     );
+
+  //     // Check if response status is OK
+  //     if (response.status === 200) {
+  //       console.log(response.data);
+        
+  //       message.success('Password updated successfully');
+  //       onClose(); // Close the modal
+  //     } else {
+  //       message.error('Password update failed');
+  //     }
+  //   } catch (error) {
+  //     // Check for specific error message if available
+  //     message.error(error.response?.data?.message || 'Password update failed');
+  //   }
+  // };
 
 
-  const adminid=34;
-  const handleUpdatePassword = async () => {
+ const handleUpdatePassword = async () => {
     const authToken = localStorage.getItem('authToken');
 
     try {
-      const response = await axios.post(
-        '/api/update-password',
-        {
-          email: userEmail,
-          currentPassword,
-          newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
+        const response = await axios.post(
+            '/api/update-password',
+            {
+                email,
+                currentPassword,
+                newPassword,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.status === 200) {
+            // Remove old token
+            localStorage.removeItem('authToken');
+
+            // Store new token
+            const newToken = response.data.token;
+            localStorage.setItem('newUpdatedAuthToken', newToken);
+
+            console.log('Password updated successfully. New token:', newToken);
+
+            // Redirect to login page after updating the password
+            window.location.href = '/login';
+        } else {
+            console.error('Password update failed');
         }
-      );
-      message.success('Password updated successfully');
-      onClose(); // Close the modal
     } catch (error) {
-      message.error(error.response?.data?.message || 'Password update failed');
+        console.error('Error during password update:', error);
     }
-  };
+};
+
 
 
 
@@ -43,10 +95,17 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userId }) => {
           Cancel
         </Button>,
         <Button key="submit" type="primary" onClick={handleUpdatePassword}>
-          Update
+          Update Password
         </Button>,
       ]}
     >
+      <Input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        style={{ marginBottom: '1rem' }}
+      />
       <Input.Password
         placeholder="Current Password"
         value={currentPassword}

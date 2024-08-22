@@ -10,12 +10,15 @@ import jsPDF from "jspdf";
 import AdminPasswordUpdateModal from "./AdminPasswordUpdate";
 // import AdminLogoutModal from '../modal/AdminLogoutModal';
 const AdminDashboard = () => {
-
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const userEmail = 'admin@example.com';
+  // curent password admin11 
   const navigate=useNavigate()
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [userId, setUserId] = useState(36);
+  // const [userId, setUserId] = useState(36);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -240,18 +243,16 @@ const handlePasswordUpdateClick = () => {
               </div>
 
               <div>
-      {/* Other Admin component code */}
       <div
-        onClick={showModal}
         className="cursor-pointer p-2 rounded-md hover:bg-indigo-600"
+        onClick={() => setShowPasswordModal(true)}
       >
         Update Password
       </div>
-
       <AdminPasswordUpdateModal
-        visible={isModalVisible}
-        onClose={handleCloseModal}
-        userId={userId} // Pass the user ID to the modal
+        visible={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        userEmail={userEmail}
       />
     </div>
             </TabList>

@@ -23,6 +23,12 @@ class AdminController extends Controller
         // $addmin=Adminlogin::create($admindata);
         // return $addmin;
         
+   //if user check alerady existe in db
+    // then cannot stored show json message user is already exist
+
+        
+
+
         $user = Adminlogin::where('email', $request->email)->first();
     
         if ($user && Hash::check($request->password, $user->password)) {
@@ -36,6 +42,44 @@ class AdminController extends Controller
     
         return response()->json(['error' => 'Unauthorized'], 401);
     }
+
+
+
+//     public function login(Request $request)
+//     {
+//          // Validate the request data
+//   $admindata=$request->validate([
+//         'email' => 'required|email',
+//         'password' => 'required',
+//     ]);
+
+
+//     $addmin=Adminlogin::create($admindata);
+//         return $addmin;
+//     // Fetch the admin by email
+//     $admin = Adminlogin::where('email', $request->email)->first();
+
+//     // Check if the admin exists and the passwords match
+//     if ($admin && Hash::check($request->password, $admin->password)) {
+//         // If they match, create a token and return success
+//         $token = $admin->createToken('adminToken')->plainTextToken;
+
+//         return response()->json([
+//             'message' => 'Login success',
+//             'token' => $token,
+//             'redirect' => '/admin',
+//         ]);
+//     }
+
+//     // If they don't match, return an error response
+//     return response()->json([
+//         'message' => 'Invalid credentials',
+//     ], 401);
+
+//     }
+
+
+
 
         // Method to fetch all users
         public function getAllUsers()
@@ -72,18 +116,34 @@ class AdminController extends Controller
     //make a method update admin email and password id wise
    
     public function updatePassword(Request $request)
-    {
-        //update current password and replace current password by newpassword
-        $user = Auth::  adminLogin();
 
-        if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['error' => 'Current password does not match'], 401);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'currentPassword' => 'required',
+            'newPassword' => 'required',
+        ]);
+
+        $admin = Adminlogin::where('email', $request->email)->first();
+
+        if ($admin && Hash::check($request->currentPassword, $admin->password)) {
+            $admin->password = Hash::make($request->newPassword);
+            $admin->save();
+
+            // Generate new token
+            $token = $admin->createToken('Personal Access Token')->plainTextToken;
+
+            // Return the updated admin data
+            return response()->json([
+                'token' => $token,
+                'user' => $admin,
+            ]);
         }
 
-        $user->password = Hash::make($request->new_password);
-        $user->save();
-
-        return response()->json(['message' => 'Password updated successfully'], 200);
+        return response()->json([
+            'message' => 'Password update failed or invalid credentials',
+        ], 401);
     }
 
+    
     }
