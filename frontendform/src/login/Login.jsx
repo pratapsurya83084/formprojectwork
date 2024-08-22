@@ -28,16 +28,16 @@ const Login = () => {
   //post  formdata
     // const response = await axios.post('/api/login', formData);
   // Make the API request
-  // const response = await axios.get('/api/getadmindetail', {
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //   },
-  // });
+  const response = await axios.get('/api/getadmindetail', {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+  });
 
 
   // Print the data to the console
-  // console.log('Admin detail:', response.data);
+  console.log('Admin detail:', response.data);
 
 // loginpass-pratap@#83084 ,pratap@gmail.com
       const { email, password } = formData; // Destructure formData
@@ -46,7 +46,7 @@ const Login = () => {
         console.log("Login successful:", user);
         alert('loginsuccessfull')
         navigate('/admin')
-        const data = await fetchUserData();
+        const data = await fetchAdminDetails();
         setUserData(data);
         console.log("User data:", data);
         // You can navigate to another page here if needed
@@ -73,7 +73,7 @@ const Login = () => {
     if (response.ok) {
       const data = await response.json();
       // Store the new token and user data in local storage
-      localStorage.setItem('newUpdatedAuthToken', data.token); // Store the new token
+      localStorage.setItem('authToken', data.token); // Store the new token
       return data.user;
     } else {
       throw new Error('Login failed');
@@ -92,7 +92,7 @@ const newUpdatedToken = localStorage.getItem('newUpdatedAuthToken');
 console.log('New Updated Token:', newUpdatedToken);
 
   // Use newUpdatedAuthToken if it exists, otherwise fallback to authToken
-  const token = newUpdatedToken || authToken;
+  const token =  authToken;
 
   try {
     const response = await fetch('/api/getadmindetail', {
@@ -105,7 +105,7 @@ console.log('New Updated Token:', newUpdatedToken);
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data); // Print the fetched data to the console
+      // console.log(data); // Print the fetched data to the console
     } else {
       console.error('Failed to fetch admin details');
     }

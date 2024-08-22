@@ -23,11 +23,6 @@ class AdminController extends Controller
         // $addmin=Adminlogin::create($admindata);
         // return $addmin;
         
-   //if user check alerady existe in db
-    // then cannot stored show json message user is already exist
-
-        
-
 
         $user = Adminlogin::where('email', $request->email)->first();
     
@@ -45,38 +40,7 @@ class AdminController extends Controller
 
 
 
-//     public function login(Request $request)
-//     {
-//          // Validate the request data
-//   $admindata=$request->validate([
-//         'email' => 'required|email',
-//         'password' => 'required',
-//     ]);
 
-
-//     $addmin=Adminlogin::create($admindata);
-//         return $addmin;
-//     // Fetch the admin by email
-//     $admin = Adminlogin::where('email', $request->email)->first();
-
-//     // Check if the admin exists and the passwords match
-//     if ($admin && Hash::check($request->password, $admin->password)) {
-//         // If they match, create a token and return success
-//         $token = $admin->createToken('adminToken')->plainTextToken;
-
-//         return response()->json([
-//             'message' => 'Login success',
-//             'token' => $token,
-//             'redirect' => '/admin',
-//         ]);
-//     }
-
-//     // If they don't match, return an error response
-//     return response()->json([
-//         'message' => 'Invalid credentials',
-//     ], 401);
-
-//     }
 
 
 
@@ -144,6 +108,4 @@ class AdminController extends Controller
             'message' => 'Password update failed or invalid credentials',
         ], 401);
     }
-
-    
     }

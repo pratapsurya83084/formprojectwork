@@ -7,80 +7,81 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
   const [newPassword, setNewPassword] = useState('');
   const [email, setEmail] = useState(userEmail || '');
 
-  // const handleUpdatePassword = async () => {
+  const handleUpdatePassword = async () => {
   
-  //   const authToken = localStorage.getItem('authToken');
-
-  //   try {
-  //     const response = await axios.post(
-  //       '/api/update-password',
-  //       {
-  //         email,
-  //         currentPassword,
-  //         newPassword,
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     );
-
-  //     // Check if response status is OK
-  //     if (response.status === 200) {
-  //       console.log(response.data);
-        
-  //       message.success('Password updated successfully');
-  //       onClose(); // Close the modal
-  //     } else {
-  //       message.error('Password update failed');
-  //     }
-  //   } catch (error) {
-  //     // Check for specific error message if available
-  //     message.error(error.response?.data?.message || 'Password update failed');
-  //   }
-  // };
-
-
- const handleUpdatePassword = async () => {
     const authToken = localStorage.getItem('authToken');
 
     try {
-        const response = await axios.post(
-            '/api/update-password',
-            {
-                email,
-                currentPassword,
-                newPassword,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${authToken}`,
-                    'Content-Type': 'application/json',
-                },
-            }
-        );
-
-        if (response.status === 200) {
-            // Remove old token
-            localStorage.removeItem('authToken');
-
-            // Store new token
-            const newToken = response.data.token;
-            localStorage.setItem('newUpdatedAuthToken', newToken);
-
-            console.log('Password updated successfully. New token:', newToken);
-
-            // Redirect to login page after updating the password
-            window.location.href = '/login';
-        } else {
-            console.error('Password update failed');
+      const response = await axios.post(
+        '/api/update-password',
+        {
+          email,
+          currentPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
         }
+      );
+
+      // Check if response status is OK
+      if (response.status === 200) {
+        console.log(response.data);
+        
+        message.success('Password updated successfully');
+        onClose(); // Close the modal
+      } else {
+        message.error('Password update failed');
+      }
     } catch (error) {
-        console.error('Error during password update:', error);
+      // Check for specific error message if available
+      message.error(error.response?.data?.message || 'Password update failed');
     }
-};
+  };
+
+
+//  const handleUpdatePassword = async () => {
+//     const authToken = localStorage.getItem('authToken');
+
+//     try {
+//         const response = await axios.post(
+//             '/api/update-password',
+//             {
+//                 email,
+//                 currentPassword,
+//                 newPassword,
+//             },
+//             {
+//                 headers: {
+//                     Authorization: `Bearer ${authToken}`,
+//                     'Content-Type': 'application/json',
+//                 },
+//             }
+//         );
+
+//         if (response.status === 200) {
+//             // Remove old token
+//             localStorage.removeItem('authToken');
+
+//             // Store new token
+//             const newToken = response.data.token;
+//             localStorage.setItem('newUpdatedAuthToken', newToken);
+
+//             console.log('Password updated successfully. New token:', newToken);
+
+//             // Redirect to login page after updating the password
+//             window.location.href = '/login';
+//         } else {
+//             console.error('Password update failed');
+//         }
+//     } catch (error) {
+//         console.error('Error during password update:', error);
+//     }
+// };
+
 
 
 
