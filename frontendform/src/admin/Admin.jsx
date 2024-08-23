@@ -11,7 +11,7 @@ import AdminPasswordUpdateModal from "./AdminPasswordUpdate";
 // import AdminLogoutModal from '../modal/AdminLogoutModal';
 const AdminDashboard = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const userEmail = 'admin@example.com';
+  const userEmail = 'admin@gmail.com';
   // curent password admin11 
   const navigate=useNavigate()
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -183,7 +183,7 @@ const AdminDashboard = () => {
 
     if (confirmLogout) {
       // Remove authToken from localStorage
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("Adlogin");
 
       // Redirect to login page
       window.location.href = "/login";

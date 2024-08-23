@@ -9,15 +9,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Adminlogin extends Model  
+class Adminlogin extends Model
 {
-    use HasFactory,HasApiTokens,Notifiable;
+  use HasFactory, Notifiable;
 
-    protected $fillable = ['email', 'password'];
+  protected $fillable = ['email', 'password'];
 
   // Automatically hash the password when it's set
   public function setPasswordAttribute($value)
   {
-      $this->attributes['password'] = bcrypt($value);
+    // $this->attributes['password'] = bcrypt($value);
+    $this->attributes['password'] = $value;
   }
 }

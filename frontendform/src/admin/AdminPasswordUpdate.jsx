@@ -21,7 +21,7 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${authToken}`,
+            // Authorization: `Bearer ${authToken}`,
             'Content-Type': 'application/json',
           },
         }
@@ -43,44 +43,6 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
   };
 
 
-//  const handleUpdatePassword = async () => {
-//     const authToken = localStorage.getItem('authToken');
-
-//     try {
-//         const response = await axios.post(
-//             '/api/update-password',
-//             {
-//                 email,
-//                 currentPassword,
-//                 newPassword,
-//             },
-//             {
-//                 headers: {
-//                     Authorization: `Bearer ${authToken}`,
-//                     'Content-Type': 'application/json',
-//                 },
-//             }
-//         );
-
-//         if (response.status === 200) {
-//             // Remove old token
-//             localStorage.removeItem('authToken');
-
-//             // Store new token
-//             const newToken = response.data.token;
-//             localStorage.setItem('newUpdatedAuthToken', newToken);
-
-//             console.log('Password updated successfully. New token:', newToken);
-
-//             // Redirect to login page after updating the password
-//             window.location.href = '/login';
-//         } else {
-//             console.error('Password update failed');
-//         }
-//     } catch (error) {
-//         console.error('Error during password update:', error);
-//     }
-// };
 
 
 

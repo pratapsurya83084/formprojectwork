@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import bcrypt from 'bcryptjs'; // bcrypt is not used in this example
-
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+// import bcrypt from 'bcryptjs'; // bcrypt is not used in this example
+import {  message } from 'antd';
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [userData, setUserData] = useState(null); // Add userData state
   const navigate = useNavigate();
 
@@ -22,130 +22,109 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    const response = await axios.post("/api/login", formData);
 
-    try {
-  //post  formdata
-    // const response = await axios.post('/api/login', formData);
-  // Make the API request
-  const response = await axios.get('/api/getadmindetail', {
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-  });
+    const { email, password } = formData;
+    const user = await loginUser(email, password);
+
+    console.log(user.login);  //if login true then navigate  /admin route
+
+    if (user.login) {
+      console.log("Login successful:", user);
+      // alert("loginsuccessfull");
+
+      message.success('Login  successfully');
+
+      // sessionStorage.setItem("Adlogin", true);
 
 
-  // Print the data to the console
-  console.log('Admin detail:', response.data);
+      localStorage.setItem("Adlogin", true);
 
-// loginpass-pratap@#83084 ,pratap@gmail.com
-      const { email, password } = formData; // Destructure formData
-      const user = await loginUser(email, password);
-      if (user) {
-        console.log("Login successful:", user);
-        alert('loginsuccessfull')
-        navigate('/admin')
-        const data = await fetchAdminDetails();
-        setUserData(data);
-        console.log("User data:", data);
-        // You can navigate to another page here if needed
-        // navigate('/some-route');
-      }
-    } catch (err) {
-      
-      setError('incorrect creadential . Please try again.');
-      console.error(err);
-
+      navigate("/admin");
+      const data = await fetchUserData();
+      setUserData(data);
+      // console.log("User data:", data);
+    }else{
+      setError("Invalid email or password.");
     }
   };
 
   // Function to handle user login
   const loginUser = async (email, password) => {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    if (response.ok) {
-      const data = await response.json();
-      // Store the new token and user data in local storage
-      localStorage.setItem('authToken', data.token); // Store the new token
-      return data.user;
-    } else {
-      throw new Error('Login failed');
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data);
+        return data;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
     }
   };
-  
 
+  // Function to fetch user data
+  const fetchUserData = async () => {
+   
 
- // Function to fetch user data
- const fetchAdminDetails = async () => {
-  // Get tokens from local storage
-  const authToken = localStorage.getItem('authToken');
-const newUpdatedToken = localStorage.getItem('newUpdatedAuthToken');
-
-// Print the token to the console
-console.log('New Updated Token:', newUpdatedToken);
-
-  // Use newUpdatedAuthToken if it exists, otherwise fallback to authToken
-  const token =  authToken;
-
-  try {
-    const response = await fetch('/api/getadmindetail', {
-      method: 'GET',
+    const response = await fetch("/api/user", {
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`, // Use the selected token for authorization
-        'Accept': 'application/json',
+        // Authorization: `Bearer ${token}`, // Include the token in the header
+        Accept: "application/json",
       },
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      // console.log(data); // Print the fetched data to the console
-    } else {
-      console.error('Failed to fetch admin details');
-    }
-  } catch (error) {
-    console.error('Error fetching admin details:', error);
-  }
-};
-
-// Call the function to fetch admin details
-// fetchAdminDetails();
-
-
-
-
-
+    // if (response.ok) {
+    //   return response.json();
+    // } else {
+    //   throw new Error("Request failed");
+    // }
+  };
 
   // update password
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     try {
       // Perform password update logic here
-      const response = await axios.post('/api/update-password', {
+      const response = await axios.post("/api/update-password", {
         email,
         newPassword,
       });
-      console.log('Password updated:', response.data);
+      console.log("Password updated:", response.data);
       setIsUpdating(false);
       // Optionally redirect or show a success message
     } catch (err) {
-      console.error('Password update failed:', err.response?.data?.message || err.message);
+      console.error(
+        "Password update failed:",
+        err.response?.data?.message || err.message
+      );
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Login</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+          Login
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 font-medium mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -160,7 +139,10 @@ console.log('New Updated Token:', newUpdatedToken);
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 font-medium mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -188,11 +170,6 @@ console.log('New Updated Token:', newUpdatedToken);
 };
 
 export default Login;
-
-
-
-
-
 
 // import React, { useState } from 'react';
 // import axios from 'axios';
