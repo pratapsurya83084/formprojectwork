@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import bcrypt from 'bcryptjs'; // bcrypt is not used in this example
 import {  message } from 'antd';
+import {Link} from 'react-router-dom'
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -78,7 +79,7 @@ const Login = () => {
   const fetchUserData = async () => {
    
 
-    const response = await fetch("/api/user", {
+    const response = await fetch("/api/getadmindetail", {
       method: "GET",
       headers: {
         // Authorization: `Bearer ${token}`, // Include the token in the header
@@ -166,6 +167,12 @@ const Login = () => {
           >
             Login
           </button>
+
+            <div className="flex justify-end mt-4 text-gray-600 cursor-pointer">
+          <Link to="/forgotPassword">
+          <button>forgot Password?</button>
+          </Link>  
+            </div>
         </form>
       </div>
     </div>

@@ -50,6 +50,13 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
+      //stored admin data into db
+      // $admin = Adminlogin::create($data);
+
+      // check if admin exist in db
+    
+
+    //   below code without token hash password stored 
         $user = Adminlogin::where(['email' => $request->email, 'password' => $request->password])->first();
 
         if (!empty($user)) {

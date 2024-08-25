@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\forgotPassword;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,7 @@ Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
 
 // update admin password
 Route::post('/update-password', [AdminController::class, 'updatePassword']);
-
+Route::post('/forgotpassword/email',[forgotPassword::class,'sendResetEmail']);
 Route::get('/',function(){
     return 'api';
 });

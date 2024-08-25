@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Adminlogin extends Model
 {
+  // HasApiTokens,
   use HasFactory, Notifiable;
 
   protected $fillable = ['email', 'password'];
