@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, message } from 'antd';
+import { Navigate } from 'react-router-dom';
 
 const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -9,7 +10,7 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
 
   const handleUpdatePassword = async () => {
   
-    const authToken = localStorage.getItem('authToken');
+    // const authToken = localStorage.getItem('authToken');
 
     try {
       const response = await axios.post(
@@ -27,19 +28,23 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
         }
       );
 
-      // Check if response status is OK
-      if (response.status === 200) {
-        console.log(response.data);
-        
-        message.success('Password updated successfully');
-        onClose(); // Close the modal
-      } else {
-        message.error('Password update failed');
-      }
-    } catch (error) {
-      // Check for specific error message if available
-      message.error(error.response?.data?.message || 'Password update failed');
-    }
+
+
+     
+  // Check if the response indicates success
+  if (response.data.update === true) {
+    // Show a green success message
+    message.success('Password updated successfully');
+   Navigate('/login')
+    onClose(); // Close the modal or perform any other necessary actions
+  } else {
+    // Show a red error message
+    message.error('Invalid password or email');
+  }
+} catch (error) {
+  // Show a red error message for any other errors (e.g., network issues)
+  message.error(error.response?.data?.message || 'Password update failed');
+}
   };
 
 

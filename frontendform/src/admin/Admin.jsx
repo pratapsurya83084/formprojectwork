@@ -183,7 +183,7 @@ const AdminDashboard = () => {
 
     if (confirmLogout) {
       // Remove authToken from localStorage
-      localStorage.removeItem("Adlogin");
+      localStorage.removeItem("token");
 
       // Redirect to login page
       window.location.href = "/login";

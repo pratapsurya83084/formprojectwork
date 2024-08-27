@@ -50,35 +50,126 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-      //stored admin data into db
-      // $admin = Adminlogin::create($data);
+        
+        //check user email is  already in table if existe then show message
 
-      // check if admin exist in db
-    
+        // $user = Adminlogin::create([
 
-    //   below code without token hash password stored 
-        $user = Adminlogin::where(['email' => $request->email, 'password' => $request->password])->first();
+        //     'email' => $data['email'],
+        //     'password' => Hash::make($data['password']), // Hash the password before saving
+        // ]);
+        // $token = $user->createToken($user->email);
+        // return [
+        //     'user' => $user,
+        //     'token' => $token,
+        // ];
+        
+        $user = Adminlogin::where('email', $request->email)->first();
+        $userPassword = Adminlogin::where('password', $request->password)->first();
 
-        if (!empty($user)) {
-            return response()->json([
-                'login' => true,
-                'message' => 'Login successful',
+// Adminlogin password and request password not equal the cannot create newToken
+        if (!$user ||!Hash::check($request->password, $user->password)) {
+            return [
+               'message' => "provide creadential is invalid?
+        please enter correct password and email",
+            ];
+        }else{
+            //if user is existes then generate new token
+            $token = $user->createToken($user->email)->plainTextToken;
+            return [
+               'message' => "login Successfully ",
                 'user' => $user,
-                'data-frontend' => $data,
-            ]);
-        } else {
-            return response()->json([
-                'login' => false,
-                'message' => 'Login Unsuccessful',
-                'user' => $user,
-                'data-frontend' => $data,
-            ]);
+                'login'=>true,
+                'token' => $token,
+            ];
         }
+
+
+
+
+        if (!$user || !$userPassword) {
+            //if user is not existes then Create a new user with hashed password
+            //    but no need to create a  more user
+            // $user = Adminlogin::create([
+
+            //     'email' => $data['email'],
+            //     'password' => Hash::make($data['password']), // Hash the password before saving
+            // ]);
+            // $token = $user->createToken($user->email);
+            // return [
+            //     'user' => $user,
+            //     'token' => $token,
+            // ];
+        } else {
+            // $token = $user->createToken($user->email);
+
+            // return [
+            //     'message' => "login Successfully ",
+            //     'user' => $user,
+            //     'token' => $token->plainTextToken,
+            //     // 'message' => "User already exist. please login",
+            // ];
+        }
+   
+
+
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return [
+                'message' => "provide creadential is invalid ?
+        please enter correct password and email",
+            ];
+        }
+
+        //if password and creadential is correct the create a new Token
+
+        //    $token=$user->createToken($user->name);
+
+        //      return [
+        //         'message'=>"login Successfully ",
+        //       'user'=>$user,
+        //       'token'=>$token->plainTextToken
+        //      ];
+
+
+
+
+
+
+
+        //   below code correct without token hash password stored 
+        // $user = Adminlogin::where(['email' => $request->email, 'password' => $request->password])->first();
+
+        // if (!empty($user)) {
+        //     return response()->json([
+        //         'login' => true,
+        //         'message' => 'Login successful',
+        //         'user' => $user,
+        //         'data-frontend' => $data,
+        //     ]);
+        // } else {
+        //     return response()->json([
+        //         'login' => false,
+        //         'message' => 'Login Unsuccessful',
+        //         'user' => $user,
+        //         'data-frontend' => $data,
+        //     ]);
+        // }
+
+
+
     }
 
 
 
-
+    // logout user i.e token
+    public  function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+        return [
+            'message' => "Logged out successfully",
+        ];
+    }
 
 
 
@@ -119,7 +210,7 @@ class AdminController extends Controller
     public function updatePassword(Request $request)
 
     {
-        $request->validate([
+        $newData = $request->validate([
             'email' => 'required|email',
             'currentPassword' => 'required',
             'newPassword' => 'required',
@@ -127,8 +218,31 @@ class AdminController extends Controller
 
         $admin = Adminlogin::where('email', $request->email)->first();
 
+
+   //check request password ,email is correct match to Adminlogin password ,email if not match then show messgae invalid
+    // if (!$admin ||!Hash::check($request->currentPassword, $admin->password)) {
+    //     return[
+    //         'message'=>'invalid email or current password',
+    //     ];
+    //     }
+
+
+
+    //  007 ,current paas= pratap12345
+//     $passwordCheck = Adminlogin::where('password', Hash::make($request->newPassword))->first();  
+//      if (!$passwordCheck) {
+//         return[
+//   'message'=>'incorrect Current password Please 
+//   Enter Correct Password',
+//         ];
+//      }
+
+
+
+
+
         if (!empty($admin)) {
-            $admin->password = $request->newPassword;
+            $admin->password = Hash::make($request->newPassword);
             $admin->save();
             // Return the updated admin data
             return response()->json([

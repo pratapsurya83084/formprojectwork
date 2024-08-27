@@ -7,9 +7,12 @@ import Admin from './admin/Admin'
 import ProtectedRoute from "./protectRoute/ProtectedRoute";
 import Login from './login/Login'
 import ForgotPassword  from '././components/forgotPassword/ForgotPassword'
+// import AppProvider from './context/AppContext'
+
 function App() {
   return (
     // <Layout>
+    // <AppProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -30,6 +33,7 @@ function App() {
       <Route  path="/ForgotPassword" element={<ForgotPassword/>}/>
         </Routes>
       </Router>
+      // </AppProvider>
     // </Layout>
   );
 }

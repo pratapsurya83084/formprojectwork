@@ -7,24 +7,25 @@ function ForgotPassword() {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            const response = await axios.post('/api/forgotpassword/email', { email });
-            setMessage(response.data.message);
-        } catch (error) {
-            setMessage('Failed to send password reset link.');
-        } finally {
-            setLoading(false);
-        }
-    };
+      e.preventDefault();
+      try {
+          const response = await axios.post('/api/forgot-password', {
+              email: email,  // Ensure 'email' is the correct value here
+          });
+          console.log(response.data);
+      } catch (error) {
+          console.error(error.response?.data || error.message);
+      }
+  };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
                 <h1 className="text-2xl font-bold mb-6 text-center">Forgot Password</h1>
-                <form onSubmit={handleSubmit}>
+                <form
+                // action="{{route('password.request')}}"
+
+                onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label htmlFor="email" className="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
                         <input
