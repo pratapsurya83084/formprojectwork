@@ -47,9 +47,6 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
 
 
 
-
-
-
   return (
     <Modal
       title="Update Password"

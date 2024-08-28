@@ -1,7 +1,0 @@
-register token store into localstorage
-key is='token'  for register token
-
-
-
-my admin password=pratap123
-admin email=pratapsuryawanshi007@gmail.com

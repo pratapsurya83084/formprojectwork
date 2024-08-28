@@ -8,7 +8,7 @@ import ProtectedRoute from "./protectRoute/ProtectedRoute";
 import Login from './login/Login'
 import ForgotPassword  from '././components/forgotPassword/ForgotPassword'
 // import AppProvider from './context/AppContext'
-
+import ResetPassword  from './components/forgotPassword/ResetPassword'
 function App() {
   return (
     // <Layout>
@@ -31,6 +31,7 @@ function App() {
 
        {/* ForgotPassword */}
       <Route  path="/ForgotPassword" element={<ForgotPassword/>}/>
+        <Route path="/resetPassword"  element={<ResetPassword/>}/>
         </Routes>
       </Router>
       // </AppProvider>

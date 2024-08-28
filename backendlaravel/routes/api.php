@@ -6,6 +6,7 @@ use App\Http\Controllers\ForgotPassword;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -30,43 +31,38 @@ middleware('auth:sanctum');
 // update admin password
 Route::post('/update-password', [AdminController::class, 'updatePassword']);
 
-// get all admin user
-Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
-
-
-
-//--------------testing api--------------
-// route login with token
-Route::post('/loginadmin', [AuthController::class, 'register']);
-
-Route::post('/logintest',[AuthController::class,'loginuser']);
-// only logged user can logout if user not login then click logout erro create unauthenticated 
-Route::post('/logout',[AuthController::class,'logout'])->
-middleware('auth:sanctum');
+// // get all admin user
+// Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
 
 
 
 
 
 
-//forgot password route  reset password
+
+//---------------------forgot password route  reset password
 Route::middleware('guest')->group(function(){
 
-    // Route::view('/forgot-password','auth.forgot-password')->name('password.request');
-
-    Route::post('/forgot-password',[ResetPasswordController::class,
-    'passwordEmail']);
-
-    Route::get('/reset-password/{token}',[ResetPasswordController::class,'PasswordReset'])
-    ->name('password.reset');
+// Route::view('/forgot-password','auth.forgot-password')->name
+// ('password.request');
 
 
-    //last route
-    Route::post('/reset-password',[ResetPasswordController::class,'passwordUpdate'])
-    ->name('password.update');
+Route::post('/forgot-password',[ResetPasswordController::class,
+'sendResetLinkEmail']);
+
+
+// Route::get('/reset-password/{token}',[ResetPasswordController::class,
+// 'PasswordReset'] )->name('password.reset');
+
+
+// reset password 
+Route::post('/reset-password',[ResetPasswordController::class,
+'passwordUpdate'])->name('password.update');
+
 });
 
 
-Route::get('/',function(){
-    return 'api';
-});
+
+// Route::get('/',function(){
+//     return 'api';
+// });

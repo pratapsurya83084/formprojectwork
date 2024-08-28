@@ -50,7 +50,7 @@ class AdminController extends Controller
             'password' => 'required',
         ]);
 
-        
+
         //check user email is  already in table if existe then show message
 
         // $user = Adminlogin::create([
@@ -63,23 +63,23 @@ class AdminController extends Controller
         //     'user' => $user,
         //     'token' => $token,
         // ];
-        
+
         $user = Adminlogin::where('email', $request->email)->first();
         $userPassword = Adminlogin::where('password', $request->password)->first();
 
-// Adminlogin password and request password not equal the cannot create newToken
-        if (!$user ||!Hash::check($request->password, $user->password)) {
+        // Adminlogin password and request password not equal the cannot create newToken
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return [
-               'message' => "provide creadential is invalid?
+                'message' => "provide creadential is invalid?
         please enter correct password and email",
             ];
-        }else{
+        } else {
             //if user is existes then generate new token
             $token = $user->createToken($user->email)->plainTextToken;
             return [
-               'message' => "login Successfully ",
+                'message' => "login Successfully ",
                 'user' => $user,
-                'login'=>true,
+                'login' => true,
                 'token' => $token,
             ];
         }
@@ -87,20 +87,20 @@ class AdminController extends Controller
 
 
 
-        if (!$user || !$userPassword) {
-            //if user is not existes then Create a new user with hashed password
-            //    but no need to create a  more user
-            // $user = Adminlogin::create([
+        // if (!$user || !$userPassword) {
+        //     //if user is not existes then Create a new user with hashed password
+        //     //    but no need to create a  more user
+        //     // $user = Adminlogin::create([
 
-            //     'email' => $data['email'],
-            //     'password' => Hash::make($data['password']), // Hash the password before saving
-            // ]);
-            // $token = $user->createToken($user->email);
-            // return [
-            //     'user' => $user,
-            //     'token' => $token,
-            // ];
-        }
+        //     //     'email' => $data['email'],
+        //     //     'password' => Hash::make($data['password']), // Hash the password before saving
+        //     // ]);
+        //     // $token = $user->createToken($user->email);
+        //     // return [
+        //     //     'user' => $user,
+        //     //     'token' => $token,
+        //     // ];
+        // }
 
 
 
@@ -111,7 +111,7 @@ class AdminController extends Controller
             ];
         }
 
-        
+
 
 
 
@@ -197,25 +197,27 @@ class AdminController extends Controller
             'newPassword' => 'required',
         ]);
 
-         // Find the admin by email
-    $admin = Adminlogin::where('email', $request->email)->first();
+        // Find the admin by email
+        $admin = Adminlogin::where('email', $request->email)->first();
 
-    // Check if the admin exists and the current password matches
-    if ($admin && Hash::check($request->currentPassword, $admin->password)) {
-        // Update the password
-        $admin->password = Hash::make($request->newPassword);
-        $admin->save();
+        // Check if the admin exists and the current password matches
+        if ($admin && Hash::check($request->currentPassword, $admin->password)) {
+            // Update the password
+            $admin->password = Hash::make($request->newPassword);
+            $admin->save();
 
-        return response()->json([
-             'update'=>true,
-            'message' => 'Password updated successfully'], 200);
-    } else {
-        return response()->json([
-            'update'=>false,
-            'message' => 'Email or current password is incorrect'], 401);
-    }
+            return response()->json([
+                'update' => true,
+                'message' => 'Password updated successfully'
+            ], 200);
+        } else {
+            return response()->json([
+                'update' => false,
+                'message' => 'Email or current password is incorrect'
+            ], 401);
+        }
 
-    
+
 
 
         // if (!empty($admin)) {

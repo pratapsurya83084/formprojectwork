@@ -190,10 +190,10 @@
 
 
 import React, { useState ,useContext} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import  { AppContext } from '../context/AppContext';
-
+import {Link}  from 'react-router-dom'
 const Login = () => {
   const { token,setToken} = useContext(AppContext); // Destructure the state and setState
 // console.log(token);
@@ -213,28 +213,12 @@ const Login = () => {
     });
   };
 
+  // login adminpassword=admin11 email=admin11
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setError('');
 
-    // try {
-    //   const { email, password } = formData;
-
-    //   // Send login request
-    //   const response = await axios.post('/api/login', { email, password });
-
-    //   // If login is successful
-    //   if (response.status === 200) {
-    //     const { token } = response.data;
-    //     localStorage.setItem('userStoken', token); // Store the token in localStorage
-
-    //     alert('Login successful');
-    //     navigate('/admin'); // Redirect to /admin page
-    //   }
-    // } catch (err) {
-    //   setError('Incorrect credentials. Please try again.');
-    //   console.error('Login failed:', err);
-    // }
 
     const response=await fetch('api/login',{
   method:"post",
@@ -315,6 +299,13 @@ const Login = () => {
           >
             Login
           </button>
+
+          {/* forgot button */}
+          <div className='flex justify-end mt-4 cursor-pointer'>
+          <Link to="/forgotpassword">
+          <p>Forgot Password ?</p>
+          </Link>  
+          </div>
         </form>
       </div>
     </div>
