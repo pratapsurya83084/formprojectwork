@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Modal, Button, Input, message } from 'antd';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
+  
+  const navigate=useNavigate()
+
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [email, setEmail] = useState(userEmail || '');
@@ -22,31 +25,25 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
         },
         {
           headers: {
-            // Authorization: `Bearer ${authToken}`,
             'Content-Type': 'application/json',
           },
         }
       );
 
-
-
-     
-  // Check if the response indicates success
-  if (response.data.update === true) {
-    // Show a green success message
-    message.success('Password updated successfully');
-   Navigate('/login')
-    onClose(); // Close the modal or perform any other necessary actions
-  } else {
-    // Show a red error message
-    message.error('Invalid password or email');
-  }
-} catch (error) {
-  // Show a red error message for any other errors (e.g., network issues)
-  message.error(error.response?.data?.message || 'Password update failed');
-}
+      const updatePasswordStatus = response.data.update;
+      
+      if (updatePasswordStatus) {
+        message.success('Password updated successfully');
+        localStorage.removeItem('token');
+        navigate('/login');
+      } else {
+        message.error('Invalid password or email. Please enter the correct credentials.');
+      }
+    } catch (error) {
+      console.error(error);
+      message.error(error.response?.data?.message || 'Password update failed. Please try again.');
+    }
   };
-
 
 
 
