@@ -235,4 +235,70 @@ class AdminController extends Controller
         //     'update' => false,
         // ], 401);
     }
+
+
+
+
+
+// create user with new password
+public function UpdateUserAdminPassword(Request $request){
+    $request->validate([
+            'email' => 'required|email',
+            'currentPassword' => 'required',
+            'newPassword' => 'required',
+    ]);
+
+
+
+   // Find the admin by email
+   $admin = Adminlogin::where('email', $request->email)->first();
+
+   if ($request->newPassword !=$request->currentPassword) {
+   return[
+    'message'=>'password does not match',
+   ];
+   }
+
+   //if admin email is exists in table then update its password by newPassword
+   // if not exist then return error message
+   if ($admin) {
+    // Update the password
+    $admin->password = Hash::make($request->newPassword);
+    $admin->save();
+
+    return response()->json([
+        'update' => true,
+        'message' => 'Password updated successfully'
+    ], 200);
+  
+   }else {
+
+        return response()->json([
+            'update' => false,
+            'message' => 'Email is incorrect'
+        ], 401);
+    
+    }
+
+//    if ($admin && Hash::check($request->currentPassword, $admin->password)) {
+//     // Update the password
+//     $admin->password = Hash::make($request->newPassword);
+//     $admin->save();
+
+//     return response()->json([
+//         'update' => true,
+//         'message' => 'create New adminUser Password updated successfully'
+//     ], 200);
+
+// }else {
+
+//     return response()->json([
+//         'update' => false,
+//         'message' => 'Email or password is incorrect'
+//     ], 401);
+
+
+}
+
+
 }

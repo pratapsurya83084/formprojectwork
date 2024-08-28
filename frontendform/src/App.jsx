@@ -6,9 +6,10 @@ import SuccessSubmitForm   from './components/SuccessSubmitForm'
 import Admin from './admin/Admin'
 import ProtectedRoute from "./protectRoute/ProtectedRoute";
 import Login from './login/Login'
-import ForgotPassword  from '././components/forgotPassword/ForgotPassword'
+import CreatePassword  from './components/forgotPassword/CreatePassword'
 // import AppProvider from './context/AppContext'
-import ResetPassword  from './components/forgotPassword/ResetPassword'
+import ForgotPassword  from './components/forgotPassword/ForgotPassword'
+
 function App() {
   return (
     // <Layout>
@@ -30,8 +31,8 @@ function App() {
        <Route path="/login" element={<Login/>} />
 
        {/* ForgotPassword */}
-      <Route  path="/ForgotPassword" element={<ForgotPassword/>}/>
-        <Route path="/resetPassword"  element={<ResetPassword/>}/>
+      {/* <Route  path="/ForgotPassword" element={<ForgotPassword/>}/> */}
+        <Route path="/admin/Updatepassword"  element={<CreatePassword/>}/>
         </Routes>
       </Router>
       // </AppProvider>

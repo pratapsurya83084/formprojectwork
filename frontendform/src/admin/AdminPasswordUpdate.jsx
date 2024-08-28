@@ -11,6 +11,7 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
   const [newPassword, setNewPassword] = useState('');
   const [email, setEmail] = useState(userEmail || '');
 
+  
   const handleUpdatePassword = async () => {
   
     // const authToken = localStorage.getItem('authToken');

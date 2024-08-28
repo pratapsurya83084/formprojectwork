@@ -194,6 +194,7 @@ import React, { useState ,useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import  { AppContext } from '../context/AppContext';
 import {Link}  from 'react-router-dom'
+import { Modal, Button, Input, message } from 'antd';
 const Login = () => {
   const { token,setToken} = useContext(AppContext); // Destructure the state and setState
 // console.log(token);
@@ -238,11 +239,11 @@ const Login = () => {
  if (data.login===true) {
   localStorage.setItem("token",data.token);
   setToken(data.token);
-  alert("success Login")
+  message.success("successfull  Login")
   navigate('/admin')
  
  }else{
-  alert("failed login Enter  incorrect creadential")
+  message.error("failed login! Enter correct creadential")
   // not redirect to /admin page
  }
 
@@ -302,8 +303,9 @@ const Login = () => {
 
           {/* forgot button */}
           <div className='flex justify-end mt-4 cursor-pointer'>
-          <Link to="/forgotpassword">
+          <Link to="/admin/Updatepassword">
           <p>Forgot Password ?</p>
+          
           </Link>  
           </div>
         </form>

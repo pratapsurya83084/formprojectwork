@@ -1,19 +1,31 @@
+import { message } from "antd";
 import React, { useState } from "react";
-
-const ResetPassword = () => {
-  const [formData, setFormData] = useState({
-    
-    email: "",
-    password: "",
-    password_confirmation: "",
-  });
+import {useNavigate}  from 'react-router-dom'
+const CreatePassword = () => {
+  const navigate=useNavigate();
+  const [email, setEmail] = useState('');
+  const [currentPassword, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   async function handleRegister(e) {
     e.preventDefault();
 
-    const response = await fetch("/api/register", {
-      method: "post",
-      // ,localStorage.getItem('token')
+    if (currentPassword !== passwordConfirmation) {
+      setErrorMessage('Passwords do not match');
+      return;
+    }
+
+    const formData = {
+      email,
+      currentPassword,
+      newPassword: passwordConfirmation,
+    };
+
+    // console.log(formData);
+
+    const response = await fetch("/api/createnewadmin", {
+      method: "POST",
       body: JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
@@ -21,44 +33,45 @@ const ResetPassword = () => {
     });
 
     const data = await response.json();
-    console.log(data);
+    if (data.update==true) {
+      message.success('create a user With New Password')
+      navigate('/login')
+    }
+
+    console.log(data.update);
+    if (data.update==false) {
+      message.error('incorrect Email')
+    }
   }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
-      //  action="{{route('password.update')}}"
-
         onSubmit={handleRegister}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-6"
       >
-        <h1 className="text-center text-3xl font-bold text-indigo-600">
-          Reset your Password
+        <h1 className="text-center text-3xl font-bold text--600">
+          Create User  
         </h1>
-        
 
         <div className="flex flex-col">
           <label className="text-gray-700 font-medium">Email</label>
           <input
             type="email"
             placeholder="Email"
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
         <div className="flex flex-col">
-          <label className="text-gray-700 font-medium">Password</label>
+          <label className="text-gray-700 font-medium">New Password</label>
           <input
             type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
+            placeholder="New Password"
+            value={currentPassword}
+            onChange={(e) => setPassword(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -68,26 +81,25 @@ const ResetPassword = () => {
           <input
             type="password"
             placeholder="Confirm Password"
-            value={formData.password_confirmation}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                password_confirmation: e.target.value,
-              })
-            }
+            value={passwordConfirmation}
+            onChange={(e) => setPasswordConfirmation(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
+          )}
         </div>
 
         <button
           type="submit"
           className="w-full py-2 mt-4 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
         >
-          Reset Password
+          {/* Reset Password */}
+          Submit
         </button>
       </form>
     </div>
   );
 };
 
-export default ResetPassword;
+export default CreatePassword;

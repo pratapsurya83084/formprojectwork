@@ -31,6 +31,10 @@ middleware('auth:sanctum');
 // update admin password
 Route::post('/update-password', [AdminController::class, 'updatePassword']);
 
+
+
+// create userAdmin newPassword Route
+Route::post('/createnewadmin', [AdminController::class,'UpdateUserAdminPassword']);
 // // get all admin user
 // Route::get('/getadmindetail', [AdminController::class, 'getAllUsers']);
 

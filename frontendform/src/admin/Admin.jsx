@@ -7,7 +7,10 @@ import {useNavigate}  from 'react-router-dom'
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
+
+
 import AdminPasswordUpdateModal from "./AdminPasswordUpdate";
+import { message } from "antd";
 // import AdminLogoutModal from '../modal/AdminLogoutModal';
 const AdminDashboard = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -178,16 +181,26 @@ const AdminDashboard = () => {
 
   //logut admin
   const handleLogout = () => {
-    // Show confirmation dialog
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
 
-    if (confirmLogout) {
+    Swal.fire({
+      title: 'Success!',
+      text: 'Successfully Logout',
+      icon: 'success',
+      confirmButtonText: 'OK'
+  }).then(() => {
+      // Redirect or update the UI as needed
+      navigate('/login');
+  });
+    // Show confirmation dialog
+    // const confirmLogout = message.success("Are you sure you want to log out?");
+
+    // if (confirmLogout) {
       // Remove authToken from localStorage
       localStorage.removeItem("token");
 
       // Redirect to login page
-      window.location.href = "/login";
-    }
+      // window.location.href = "/login";
+    // }
   };
 
 
@@ -252,7 +265,7 @@ const handlePasswordUpdateClick = () => {
       <AdminPasswordUpdateModal
         visible={showPasswordModal}
         onClose={() => setShowPasswordModal(false)}
-        userEmail={userEmail}
+        // userEmail={userEmail}
       />
     </div>
             </TabList>
