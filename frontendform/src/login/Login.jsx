@@ -226,7 +226,8 @@ const Login = () => {
   body:JSON.stringify(formData)
 
     })
-
+   
+    
     const data=await response.json();
     // console.log(data);
      // Retrieve the token
@@ -302,12 +303,7 @@ const Login = () => {
           </button>
 
           {/* forgot button */}
-          <div className='flex justify-end mt-4 cursor-pointer'>
-          <Link to="/admin/Updatepassword">
-          <p>Forgot Password ?</p>
-          
-          </Link>  
-          </div>
+          {/*  */}
         </form>
       </div>
     </div>

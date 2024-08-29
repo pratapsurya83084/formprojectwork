@@ -45,7 +45,10 @@ const CreatePassword = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="mb-4">
+          <img src="\logo.png" alt="" />
+        </div>
       <form
         onSubmit={handleRegister}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-6"
