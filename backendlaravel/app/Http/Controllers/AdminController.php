@@ -11,36 +11,7 @@ class AdminController extends Controller
 {
 
 
-    // admin login
-    // public function adminLogin(Request $request)
-    // {
-    //     $admindata =  $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
-
-    //     // add admindata into database
-    //     // $addmin = Adminlogin::create($admindata);
-    //     // return $addmin;
-
-    //     $user = Adminlogin::where('email', $request->email)->first();
-
-    //     // if ($user && Hash::check($request->password, $user->password)) {
-
-
-    //     if ($request->password === $user->password) {
-
-    //         $token = $user->createToken('Personal Access Token')->plainTextToken;
-
-    //         return response()->json([
-    //             'token' => $token,
-    //             'user' => $user,
-    //         ]);
-    //     }
-
-    //     // return response()->json(['error' => 'Unauthorized'], 401);
-    //     return response()->json(['error' => $admindata], 401);
-    // }
+   
 
 
     public function adminLogin(Request $request)
@@ -52,7 +23,7 @@ class AdminController extends Controller
 
 
         //check user email is  already in table if existe then show message
-
+  //set admin email , password  and comment out once create new email  
         // $user = Adminlogin::create([
 
         //     'email' => $data['email'],
@@ -83,24 +54,6 @@ class AdminController extends Controller
                 'token' => $token,
             ];
         }
-
-
-
-
-        // if (!$user || !$userPassword) {
-        //     //if user is not existes then Create a new user with hashed password
-        //     //    but no need to create a  more user
-        //     // $user = Adminlogin::create([
-
-        //     //     'email' => $data['email'],
-        //     //     'password' => Hash::make($data['password']), // Hash the password before saving
-        //     // ]);
-        //     // $token = $user->createToken($user->email);
-        //     // return [
-        //     //     'user' => $user,
-        //     //     'token' => $token,
-        //     // ];
-        // }
 
 
 
