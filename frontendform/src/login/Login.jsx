@@ -35,11 +35,17 @@ const Login = () => {
 
     const response=await fetch('api/login',{
   method:"post",
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+},
   body:JSON.stringify(formData)
-
+  
     })
    
-    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
     const data=await response.json();
     // console.log(data);
      // Retrieve the token

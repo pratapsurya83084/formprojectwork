@@ -27,6 +27,7 @@ const AdminPasswordUpdateModal = ({ visible, onClose, userEmail }) => {
         {
           headers: {
             'Content-Type': 'application/json',
+             'Accept': 'application/json'
           },
         }
       );

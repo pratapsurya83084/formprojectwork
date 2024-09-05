@@ -52,7 +52,12 @@ const Form = () => {
        try {
         const response = await fetch("/api/registers", {
             method: "post",
-            body: JSON.stringify(formData),
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            // body: JSON.stringify(formData),
+            body:JSON.stringify(formData)
           });
           if (response.ok) {
             Swal.fire({

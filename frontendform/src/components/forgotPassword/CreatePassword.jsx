@@ -26,9 +26,11 @@ const CreatePassword = () => {
 
     const response = await fetch("/api/createnewadmin", {
       method: "POST",
-      body: JSON.stringify(formData),
+      // body: JSON.stringify(formData),
+      body:JSON.stringify(formData),
       headers: {
         "Content-Type": "application/json",
+       'Accept': 'application/json'
       },
     });
 
